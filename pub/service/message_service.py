@@ -2,7 +2,7 @@ from models.models import NotiMessage, UserReadMessage
 
 def save_new_message(data):
     message = NotiMessage(**data)
-    message.status="unread"
+    message.status="publish"
     message.save()
 
 def update_message_status(id, status):
@@ -16,9 +16,9 @@ def update_message_status(id, status):
 def get_message_by_group_ids(client_id, group_ids, status=None,limit=10, offset=0):
     group_ids = get_group_ids(group_ids)
 
-    print(group_ids)
-    print(status)
-    print(limit)
+    # print(group_ids)
+    # print(status)
+    # print(limit)
     messages = NotiMessage.objects.filter(group_ids__in=group_ids)
     if status:
         messages = messages.filter(status=status)
@@ -47,9 +47,9 @@ def get_message_by_group_ids1(client_id, group_ids, status=None,limit=10, offset
         limit =10
     if not offset:
         offset = 0
-    print(group_ids)
-    print(status)
-    print(limit)
+    # print(group_ids)
+    # print(status)
+    # print(limit)
     pipeline = [
         {"$sort" : {"created" : -1}},
         {"$skip": int(offset) },
@@ -148,8 +148,8 @@ def is_have_message(params, msg):
         for group_id in group_ids:
             client1 ='"{}"'.format(group_id)
             client2 =client1.replace('"',"'")
-            print(client1)
-            print(client2)
+            # print(client1)
+            # print(client2)
             if client1 in str(msg) or client2 in str(msg):
                 return True
     return False

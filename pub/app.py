@@ -129,25 +129,6 @@ def update_message_status(id):
 def mark_message_read():
     record = request.get_json(force=True)
     return read_message(record)
-
-@app.route('/api/v1/test/', methods=['POST'])
-def create_test_record():
-    data =request.get_json(force=True)
-    message = NotiMessage(**data)
-    message.status="unread"
-    message.save()
-    return jsonify(message.to_json())
-
-@app.route('/api/v1/test/<id>', methods=['PUT'])
-def update_record(id):
-    record = request.get_json(force=True)
-    message = NotiMessage.objects(id=id).first()
-    LOG.info(message)
-    if not message:
-        return jsonify({'error': 'data not found'})
-    else:
-        message.update(status=record['status'])
-    return jsonify(message.to_json())
     
 @app.route('/api/v1/notifications/messages/<client_id>/count', methods=['GET'])
 def get_status_count(client_id):

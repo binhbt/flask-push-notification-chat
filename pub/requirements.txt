@@ -1,0 +1,12 @@
+flask
+redis
+Flask-SSE
+flask-blueprint
+uwsgi
+PyJWT
+gunicorn
+gevent
+honcho==1.0.1
+Flask-uWSGI-WebSocket==0.6.1
+python-logstash
+flask-mongoengine

@@ -1,0 +1,43 @@
+version: "3"
+services:
+  pub:
+    build:
+      context: .
+      dockerfile: pub/Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+     - ./pub:/build
+    command:  uwsgi --socket 0.0.0.0:5000 --protocol=http -w app:app --gevent 2000 --workers 5
+    # command: gunicorn pub.app:app --worker-class gevent --bind 0.0.0.0:5000 --worker-connections=2000 --workers=5
+    depends_on:
+     - redis
+  redis:
+    image: redis
+    ports:
+     - "6380:6379"
+    expose:
+     - 6380
+  notify-db:
+    restart: always
+    image: mongo:latest
+    command: mongod --auth
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: admin
+        MONGO_INITDB_ROOT_PASSWORD: adminpwd
+        MONGO_INITDB_DATABASE: notify_db
+    volumes:
+        - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+        - "noti-data:/data/db"
+    ports:
+        - "27027:27017"
+  nginx:
+    build: ./nginx
+    restart: always
+    volumes:
+      - /www/static
+    ports:
+      - "82:80"
+    depends_on:
+      - pub
+

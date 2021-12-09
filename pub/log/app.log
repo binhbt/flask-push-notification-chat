@@ -1,0 +1,159 @@
+[12-01 10:06:12] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json['client_id'] == client_id:
+TypeError: string indices must be integers
+[12-01 10:06:13] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json['client_id'] == client_id:
+TypeError: string indices must be integers
+[12-01 10:07:33] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:07:33] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:07:44] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:07:44] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:07:44] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:07:45] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:08:06] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:08:06] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:08:06] [p12] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:08:07] [p13] [send_message_to_ws] [./app.py:134] [ERROR] - string indices must be integers
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    if my_json and 'client_id' in my_json:
+TypeError: string indices must be integers
+[12-01 10:09:59] [p15] [send_message_to_ws] [./app.py:136] [ERROR] - 'str' object has no attribute 'read'
+Traceback (most recent call last):
+  File "./app.py", line 129, in send_message_to_ws
+    my_json = json.load(msg.decode('utf8').replace("'", '"'))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 296, in load
+    return loads(fp.read(),
+AttributeError: 'str' object has no attribute 'read'
+[12-01 10:10:01] [p15] [send_message_to_ws] [./app.py:136] [ERROR] - 'str' object has no attribute 'read'
+Traceback (most recent call last):
+  File "./app.py", line 129, in send_message_to_ws
+    my_json = json.load(msg.decode('utf8').replace("'", '"'))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 296, in load
+    return loads(fp.read(),
+AttributeError: 'str' object has no attribute 'read'
+[12-01 10:12:01] [p13] [send_message_to_ws] [./app.py:138] [ERROR] - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    my_json = json.load(io.BytesIO(fix_bytes_value))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 299, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/local/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[12-01 10:12:02] [p13] [send_message_to_ws] [./app.py:138] [ERROR] - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    my_json = json.load(io.BytesIO(fix_bytes_value))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 299, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/local/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[12-01 10:14:05] [p13] [send_message_to_ws] [./app.py:138] [ERROR] - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "./app.py", line 131, in send_message_to_ws
+    my_json = json.load(io.BytesIO(fix_bytes_value))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 299, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/local/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[12-01 10:39:54] [p13] [send_message_to_ws] [./app.py:139] [ERROR] - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "./app.py", line 132, in send_message_to_ws
+    my_json = json.load(io.BytesIO(fix_bytes_value))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 299, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/local/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[12-01 10:39:54] [p12] [send_message_to_ws] [./app.py:139] [ERROR] - Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "./app.py", line 132, in send_message_to_ws
+    my_json = json.load(io.BytesIO(fix_bytes_value))
+  File "/usr/local/lib/python3.6/json/__init__.py", line 299, in load
+    parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/local/lib/python3.6/json/__init__.py", line 354, in loads
+    return _default_decoder.decode(s)
+  File "/usr/local/lib/python3.6/json/decoder.py", line 339, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/local/lib/python3.6/json/decoder.py", line 357, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+[12-01 10:46:57] [p13] [send_message_to_ws] [./app.py:131] [ERROR] - a bytes-like object is required, not 'str'
+Traceback (most recent call last):
+  File "./app.py", line 128, in send_message_to_ws
+    if client in msg:
+TypeError: a bytes-like object is required, not 'str'
+[12-01 10:46:57] [p14] [send_message_to_ws] [./app.py:131] [ERROR] - a bytes-like object is required, not 'str'
+Traceback (most recent call last):
+  File "./app.py", line 128, in send_message_to_ws
+    if client in msg:
+TypeError: a bytes-like object is required, not 'str'
+[12-01 10:48:44] [p12] [send_message_to_ws] [./app.py:131] [ERROR] - 'bytes' object has no attribute 'tostring'
+Traceback (most recent call last):
+  File "./app.py", line 128, in send_message_to_ws
+    if client in msg.tostring():
+AttributeError: 'bytes' object has no attribute 'tostring'
+[12-01 10:48:45] [p13] [send_message_to_ws] [./app.py:131] [ERROR] - 'bytes' object has no attribute 'tostring'
+Traceback (most recent call last):
+  File "./app.py", line 128, in send_message_to_ws
+    if client in msg.tostring():
+AttributeError: 'bytes' object has no attribute 'tostring'

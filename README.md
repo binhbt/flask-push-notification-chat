@@ -2,7 +2,7 @@
 Run docker: docker-compose up --build  
 Run wscat connect to server as socket client  
 Join 2 groups 111, 222  
-wscat -c ws://167.71.218.57/ws/notification/111#222  
+wscat -c ws://167.71.218.57/ws/notification/111,222  
 Join group 222  
 wscat -c ws://0.0.0.0:82/echo/222  
 Join group 333  

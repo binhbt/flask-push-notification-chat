@@ -9,7 +9,7 @@ import time
 from util.log_utils import logger as LOG
 from models.db import initialize_db
 from models.models import NotiMessage, UserReadMessage
-from service.message_service import get_message_by_group_ids1, read_message, get_group_ids,\
+from service.message_service import get_message_send_from_id, get_message_by_group_ids1, read_message, get_group_ids,\
      is_have_message, save_new_message, update_message_status, get_message_by_group_ids, count_message_by_group_ids
 app = Flask(__name__)
 # app.wsgi_app = AuthMiddleWare(app.wsgi_app)
@@ -104,7 +104,17 @@ def push_notification():
     publish_message(data, CHANNEL)
     save_new_message(data)
     return 'ok'
-
+@app.route('/api/v1/notifications/messages_sendby/<from_id>', methods=['GET'])
+def get_message_from(from_id):
+    limit = request.args.get('limit')
+    offset = request.args.get('offset')
+    status = request.args.get('status')
+    group_ids = request.args.get('group_ids')
+    message = get_message_send_from_id(from_id, group_ids, status, limit, offset)
+    LOG.info(message)
+    if not message:
+        return jsonify({'error': 'data not found'})
+    return jsonify(message)
 @app.route('/api/v1/notifications/<client_id>', methods=['GET'])
 def get_message(client_id):
     limit = request.args.get('limit')

@@ -12,7 +12,15 @@ def update_message_status(id, status):
     else:
         message.update(status=status)
     return message
+def get_message_send_from_id(from_id, group_ids, status=None,limit=10, offset=0):
+    group_ids = get_group_ids(group_ids)
 
+    messages = NotiMessage.objects.filter(group_ids__in=group_ids).filter(from_id=from_id)
+    if status:
+        messages = messages.filter(status=status)
+    messages = messages.limit(int(limit)).skip(int(offset)).all()
+
+    return messages
 def get_message_by_group_ids(client_id, group_ids, status=None,limit=10, offset=0):
     group_ids = get_group_ids(group_ids)
 

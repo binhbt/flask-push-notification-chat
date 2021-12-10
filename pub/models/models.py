@@ -2,7 +2,7 @@ from .db import db
 import datetime
 
 class NotiMessage(db.Document):
-    from_id = db.ListField(db.StringField(),  unique=False)
+    from_id = db.StringField(required=False, unique=False)
     group_ids = db.ListField(db.StringField(),  unique=False)
     message = db.StringField(required=False, unique=False)
     mtype = db.StringField(required=False, unique=False)

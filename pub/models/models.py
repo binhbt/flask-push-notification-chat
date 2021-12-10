@@ -2,6 +2,7 @@ from .db import db
 import datetime
 
 class NotiMessage(db.Document):
+    from_id = db.ListField(db.StringField(),  unique=False)
     group_ids = db.ListField(db.StringField(),  unique=False)
     message = db.StringField(required=False, unique=False)
     mtype = db.StringField(required=False, unique=False)
@@ -9,7 +10,8 @@ class NotiMessage(db.Document):
     url = db.StringField(required=False, unique=False)
     created = db.DateTimeField(default=datetime.datetime.utcnow)
     def to_json(self):
-        return {"group_ids": self.group_ids,
+        return {"from_id": self.from_id,
+                "group_ids": self.group_ids,
                 "message": self.message,
                 "mtype": self.mtype,
                 "status": self.status,

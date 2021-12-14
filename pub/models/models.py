@@ -20,10 +20,10 @@ class NotiMessage(db.Document):
 
 class UserReadMessage(db.Document):
     client_id = db.StringField(required=True, unique=False)
-    message_id = db.StringField(required=True, unique=False)
+    message_ids = db.ListField(db.StringField(),  unique=False)
     created = db.DateTimeField(default=datetime.datetime.utcnow)
     def to_json(self):
         return {"client_id": self.client_id,
-                "message_id": self.message_id,
+                "message_ids": self.message_ids,
                 "created": self.created,
                 'id': str(self.id)}  

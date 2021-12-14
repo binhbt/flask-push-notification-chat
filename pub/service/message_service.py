@@ -68,9 +68,11 @@ def get_message_by_group_ids1(client_id, group_ids, status=None,limit=10, offset
                 {
                     "from": "user_read_message",
                     "localField": "message_id",
-                    "foreignField": "message_id",
+                    "foreignField": "message_ids",
+                    "let": { "message_ids": "$message_ids" },
                     "as": "read",
                     "pipeline": [
+                        # {"$match": {"message_id": {"$in":"$$message_ids"}}},
                         { "$match": {"client_id": {"$eq":client_id}}}
                         ],
                 }
@@ -87,7 +89,6 @@ def get_message_by_group_ids1(client_id, group_ids, status=None,limit=10, offset
         jdata['_id']=str(jdata['_id'])
         if jdata['read']:
             jdata['read'] = True
-            
         else:
             jdata['read'] = False
         rs.append(jdata)
@@ -95,15 +96,19 @@ def get_message_by_group_ids1(client_id, group_ids, status=None,limit=10, offset
     return rs
 
 def read_message(data):
-    message = UserReadMessage.objects(client_id=data['client_id'], message_id=data['message_id']).first()
+    message = UserReadMessage.objects(client_id=data['client_id'], message_ids__in=data['message_ids']).first()
     if not message:
         message = UserReadMessage(**data)
         message.save()
-    return message.to_json()
+        return message.to_json()
+    else:
+        # message = UserReadMessage(**data)
+        # message.save()
+        return {'message':'Invalid data'}
 
 def count_message_by_group_ids(client_id, group_ids, status=None):
     group_ids = get_group_ids(group_ids)
-    print(status)
+    # print(status)
     pipeline = []
     if status:
         pipeline = [{ "$match": {"status": {"$eq":status}}}]
@@ -119,7 +124,7 @@ def count_message_by_group_ids(client_id, group_ids, status=None):
                         {
                             "from": "user_read_message",
                             "localField": "message_id",
-                            "foreignField": "message_id",
+                            "foreignField": "message_ids",
                             "as": "read",
                             "pipeline": [
                                 { "$match": {"client_id": {"$eq":client_id}}}
@@ -156,8 +161,8 @@ def is_have_message(params, msg):
         for group_id in group_ids:
             client1 ='"{}"'.format(group_id)
             client2 =client1.replace('"',"'")
-            # print(client1)
-            # print(client2)
+            print(client1)
+            print(client2)
             if client1 in str(msg) or client2 in str(msg):
                 return True
     return False

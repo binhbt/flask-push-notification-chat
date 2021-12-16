@@ -1,4 +1,12 @@
 # flask-websocket-push-notification-and-chat-demo  
+Features Demo:  
+1. Flask websocket with redis broker for scale up on production  
+2. Push notification on real time  
+3. Group chat  
+4. Read, unread, count user messages via rest apis  
+5. Store messages by Mongo DB  
+6. Test with wscat client  
+### Deploy  
 Run docker: docker-compose up --build  
 ### Get session token  
 curl --location --request POST 'http://167.71.218.57/api/v1/notifications/generate_session_token' \  

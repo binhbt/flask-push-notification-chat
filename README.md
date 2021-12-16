@@ -7,7 +7,8 @@ Features Demo:
 5. Store messages by Mongo DB  
 6. Test with wscat client  
 ### Deploy  
-Run docker: docker-compose up --build  
+Run docker:  
+>docker-compose up --build  
 ### Get session token  
 >curl --location --request POST 'http://167.71.218.57/api/v1/notifications/generate_session_token' \  
 >--header 'Content-Type: application/json' \  

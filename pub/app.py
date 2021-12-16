@@ -10,7 +10,9 @@ from util.log_utils import logger as LOG
 from models.db import initialize_db
 from models.models import NotiMessage, UserReadMessage
 from service.message_service import get_message_send_from_id, get_message_by_group_ids1, read_message, get_group_ids,\
-     is_have_message, save_new_message, update_message_status, get_message_by_group_ids, count_message_by_group_ids
+     is_have_message, save_new_message, update_message_status, get_message_by_group_ids, count_message_by_group_ids,\
+     del_message    
+from service.auth_service import session_token_generate, validate_session_token
 app = Flask(__name__)
 # app.wsgi_app = AuthMiddleWare(app.wsgi_app)
 websocket = GeventWebSocket(app)
@@ -30,8 +32,12 @@ redis = Redis(host='redis', port=6379)
 CHANNEL='notifications_channel'
 pub = redis.pubsub()
 
-@websocket.route('/ws/notification/<group_ids>')
-def echo(ws, group_ids):
+@websocket.route('/ws/notification/<token>/<group_ids>')
+def echo(ws, token, group_ids):
+    ok = validate_session_token(token)
+    if not ok:
+        ws.send('Auth err 401')
+        return 
     pub.subscribe(CHANNEL)
     while True:
         msg = get_redis_message()
@@ -96,6 +102,14 @@ def publish_message(data, channel=CHANNEL):
 def hello():
     return 'Hello World!'
 
+@app.route('/api/v1/notifications/generate_session_token', methods = ['POST'])
+def generate_session_token():
+    data =request.get_json(force=True)
+    print(data)
+    LOG.info(data)
+    token = session_token_generate(data)
+    return {'token':token}
+
 @app.route('/api/v1/notifications/push', methods = ['POST'])
 def push_notification():
     data =request.get_json(force=True)
@@ -104,6 +118,7 @@ def push_notification():
     publish_message(data, CHANNEL)
     save_new_message(data)
     return 'ok'
+
 @app.route('/api/v1/notifications/messages_sendby/<from_id>', methods=['GET'])
 def get_message_from(from_id):
     limit = request.args.get('limit')
@@ -115,6 +130,7 @@ def get_message_from(from_id):
     if not message:
         return jsonify({'error': 'data not found'})
     return jsonify(message)
+
 @app.route('/api/v1/notifications/<client_id>', methods=['GET'])
 def get_message(client_id):
     limit = request.args.get('limit')
@@ -139,7 +155,13 @@ def update_message_status(id):
 def mark_message_read():
     record = request.get_json(force=True)
     return read_message(record)
-    
+
+@app.route('/api/v1/notifications/messages/del', methods=['DELETE'])
+def mark_message_delete():
+    record = request.get_json(force=True)
+    return del_message(record)
+
+
 @app.route('/api/v1/notifications/messages/<client_id>/count', methods=['GET'])
 def get_status_count(client_id):
     status = request.args.get('status')
@@ -149,5 +171,6 @@ def get_status_count(client_id):
     if not message:
         return jsonify({'error': 'data not found'})
     return message
+    
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

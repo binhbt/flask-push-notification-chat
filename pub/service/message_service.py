@@ -1,4 +1,4 @@
-from models.models import NotiMessage, UserReadMessage
+from models.models import NotiMessage, UserReadMessage, UserDeleteMessage
 
 def save_new_message(data):
     message = NotiMessage(**data)
@@ -69,14 +69,26 @@ def get_message_by_group_ids1(client_id, group_ids, status=None,limit=10, offset
                     "from": "user_read_message",
                     "localField": "message_id",
                     "foreignField": "message_ids",
-                    "let": { "message_ids": "$message_ids" },
+                    # "let": { "message_ids": "$message_ids" },
                     "as": "read",
                     "pipeline": [
                         # {"$match": {"message_id": {"$in":"$$message_ids"}}},
                         { "$match": {"client_id": {"$eq":client_id}}}
                         ],
                 }
-        }
+        },
+        {       "$lookup":
+                {
+                    "from": "user_delete_message",
+                    "localField": "message_id",
+                    "foreignField": "message_ids",
+                    "as": "del",
+                    "pipeline": [
+                        { "$match": {"client_id": {"$eq":client_id}}}
+                        ],
+                }
+        },
+        {"$match": {"del": {"$exists": True, "$type": "array", "$eq": [] }}}, 
     ]
     if status:
         cond ={ "$match": {"status": {"$eq":status}}}
@@ -105,6 +117,16 @@ def read_message(data):
         # message = UserReadMessage(**data)
         # message.save()
         return {'message':'Invalid data'}
+def del_message(data):
+    message = UserDeleteMessage.objects(client_id=data['client_id'], message_ids__in=data['message_ids']).first()
+    if not message:
+        message = UserDeleteMessage(**data)
+        message.save()
+        return message.to_json()
+    else:
+        # message = UserDeleteMessage(**data)
+        # message.save()
+        return {'message':'Invalid data'}
 
 def count_message_by_group_ids(client_id, group_ids, status=None):
     group_ids = get_group_ids(group_ids)
@@ -116,6 +138,19 @@ def count_message_by_group_ids(client_id, group_ids, status=None):
         {"$match": {"group_ids": {"$in":group_ids}}},
         {"$facet": {
             "Total": [
+            {"$addFields": {"message_id": { "$toString": "$_id"}}},
+            { "$lookup":
+                        {
+                            "from": "user_delete_message",
+                            "localField": "message_id",
+                            "foreignField": "message_ids",
+                            "as": "del",
+                            "pipeline": [
+                                { "$match": {"client_id": {"$eq":client_id}}}
+                                ],
+                        }
+            },
+            {"$match": {"del": {"$exists": True, "$type": "array", "$eq": [] }}}, 
             { "$count": "Total" },
             ],
             "Read": [
@@ -131,9 +166,24 @@ def count_message_by_group_ids(client_id, group_ids, status=None):
                                 ],
                         }
             },
+            
             {"$match": {"read": {"$exists": True, "$type": "array", "$ne": [] }}}, 
+            
+            { "$lookup":
+                        {
+                            "from": "user_delete_message",
+                            "localField": "message_id",
+                            "foreignField": "message_ids",
+                            "as": "del",
+                            "pipeline": [
+                                { "$match": {"client_id": {"$eq":client_id}}}
+                                ],
+                        }
+            },
+            {"$match": {"del": {"$exists": True, "$type": "array", "$eq": [] }}}, 
             {"$count": "Total" }
             ],
+            
         }},
         { "$project": {
             "total": { "$arrayElemAt": ["$Total.Total", 0] },
@@ -166,3 +216,4 @@ def is_have_message(params, msg):
             if client1 in str(msg) or client2 in str(msg):
                 return True
     return False
+

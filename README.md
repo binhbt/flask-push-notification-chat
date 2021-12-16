@@ -35,7 +35,7 @@ wscat -c ws://0.0.0.0:82/ws/chitchat/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/222
 Join group 333  
 wscat -c ws://0.0.0.0:82/ws/chitchat/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/333  
 Send message via wscat  
->>{'from_id': '111', 'group_ids': ['111', '333'], 'message': 'hello1', 'mtype': 'chat_mess'}  
+>${'from_id': '111', 'group_ids': ['111', '333'], 'message': 'hello1', 'mtype': 'chat_mess'}  
 
 ### APIS  
 Read message  

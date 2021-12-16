@@ -33,7 +33,7 @@ CHANNEL='notifications_channel'
 pub = redis.pubsub()
 
 @websocket.route('/ws/notification/<token>/<group_ids>')
-def echo(ws, token, group_ids):
+def notification(ws, token, group_ids):
     ok = validate_session_token(token)
     if not ok:
         ws.send('Auth err 401')
@@ -51,6 +51,34 @@ def echo(ws, token, group_ids):
                 ws.send(msg)
         time.sleep(1)
 
+@websocket.route('/ws/chitchat/<token>/<group_ids>')
+def chitchat(ws, token, group_ids):
+    ok = validate_session_token(token)
+    if not ok:
+        ws.send('Auth err 401')
+        return 
+    pub.subscribe(CHANNEL)
+    while True:
+        #Receive message from socket
+        msg = ws.receive()
+        if msg:
+            print('---')
+            print(msg)
+            publish_message(msg , CHANNEL)
+        #Receive message from redis
+        msg = get_redis_message()
+        process_redis_message(ws, msg, group_ids)
+        time.sleep(1)
+
+def process_redis_message(ws, msg, group_ids):
+    
+    if msg:
+        msg = msg.decode("utf-8")
+        print('...')
+        print(msg)
+        if is_have_message(group_ids, msg):
+            # LOG.info('....')
+            ws.send(msg)
 @websocket.route('/echo')
 def echo1(ws):
     while True:
@@ -60,21 +88,7 @@ def echo1(ws):
         time.sleep(1)
 
 
-# def send_message_to_ws(ws, group_ids, msg):
-#     try:
-#         client1 ='"{}"'.format(group_id)
-#         client2 =client1.replace('"',"'")
-#         print(client1)
-#         print(client2)
-#         if client1 in str(msg) or client2 in str(msg):
-#             print('send.....')
-#             ws.send(msg)
-#         else:
-#             print('not send.....')
-#             print(str(msg))
-#     except Exception as e:
-#         LOG.exception(e)
-#         print(e)
+
 def get_socket_message_and_send(ws):
     msg = ws.receive()
     # ws.send(msg)
@@ -93,10 +107,12 @@ def get_redis_message():
             return message
     return None
 def publish_message(data, channel=CHANNEL):
-    redis.publish(
-        channel=channel,
-        message=str(data)
-    )
+    if data:
+        data = data.decode("utf-8") 
+        redis.publish(
+            channel=channel,
+            message=str(data)
+        )
 
 @app.route('/')
 def hello():

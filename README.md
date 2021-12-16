@@ -1,6 +1,6 @@
-# flask-websocket-push-notification-demo  
+# flask-websocket-push-notification-and-chat-demo  
 Run docker: docker-compose up --build  
-Get session token  
+### Get session token  
 curl --location --request POST 'http://167.71.218.57/api/v1/notifications/generate_session_token' \  
 --header 'Content-Type: application/json' \  
 --data-raw '{"user_id":"111","device_id":"test_device", "role":"user", "model":"Xiaomi"}'  
@@ -11,18 +11,33 @@ Result
 }`  
 
 Run wscat connect to server as socket client  
+
+### NOTIFICATIONS  
 Join 2 groups 111, 222  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/111,222  
 Join group 222  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/222  
 Join group 333  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/333  
+
+
 Push Message via rest api  
 `curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/push' \
 --header 'Content-Type: application/json' \
 --data-raw '{"group_ids":["111","333"], "message":"hello", "mtype":"type_a"}'`  
 Client with id 111 will receive message  
 
+### CHAT  
+Join 2 groups 111, 222  
+wscat -c ws://0.0.0.0:82/ws/chitchat/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/111,222  
+Join group 222  
+wscat -c ws://0.0.0.0:82/ws/chitchat/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/222  
+Join group 333  
+wscat -c ws://0.0.0.0:82/ws/chitchat/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/333  
+Send message via wscat  
+>{'from_id': '111', 'group_ids': ['111', '333'], 'message': 'hello1', 'mtype': 'chat_mess'}  
+
+### APIS  
 Read message  
 `curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/messages/read' \  
 --header 'Content-Type: application/json' \  

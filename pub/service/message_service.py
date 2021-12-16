@@ -207,13 +207,15 @@ def get_group_ids(params):
     return None
 def is_have_message(params, msg):
     group_ids = get_group_ids(params)
+    print(group_ids)
     if group_ids:
         for group_id in group_ids:
             client1 ='"{}"'.format(group_id)
             client2 =client1.replace('"',"'")
-            print(client1)
-            print(client2)
+            # print(client1)
+            # print(client2)
             if client1 in str(msg) or client2 in str(msg):
+                # print('have mesage')
                 return True
     return False
 

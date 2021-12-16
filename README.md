@@ -10,7 +10,7 @@ Features Demo:
 Run docker:  
 >docker-compose up --build  
 ### Get session token  
->curl --location --request POST 'http://167.71.218.57/api/v1/notifications/generate_session_token' \  
+>curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/generate_session_token' \  
 >--header 'Content-Type: application/json' \  
 >--data-raw '{"user_id":"111","device_id":"test_device", "role":"user", "model":"Xiaomi"}'  
 

@@ -1,17 +1,37 @@
-# flask-websocket-push-notification-mongo
+# flask-websocket-push-notification-demo  
 Run docker: docker-compose up --build  
+Get session token  
+curl --location --request POST 'http://167.71.218.57/api/v1/notifications/generate_session_token' \  
+--header 'Content-Type: application/json' \  
+--data-raw '{"user_id":"111","device_id":"test_device", "role":"user", "model":"Xiaomi"}'  
+
+Result  
+`{  
+    "token": "b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305"  
+}`  
+
 Run wscat connect to server as socket client  
 Join 2 groups 111, 222  
-wscat -c ws://167.71.218.57/ws/notification/111,222  
+wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/111,222  
 Join group 222  
-wscat -c ws://0.0.0.0:82/echo/222  
+wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/222  
 Join group 333  
-wscat -c ws://0.0.0.0:82/echo/333  
+wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/333  
 Push Message via rest api  
 `curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/push' \
 --header 'Content-Type: application/json' \
 --data-raw '{"group_ids":["111","333"], "message":"hello", "mtype":"type_a"}'`  
 Client with id 111 will receive message  
+
+Read message  
+`curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/messages/read' \  
+--header 'Content-Type: application/json' \  
+--data-raw '{"client_id":"111", "message_ids":["61af159d3b68f2c25c549bcd", "61af106418898f5b6bd23d7f"]}'`  
+
+Delete messages  
+`curl --location --request DELETE 'http://0.0.0.0:82/api/v1/notifications/messages/del' \  
+--header 'Content-Type: application/json' \  
+--data-raw '{"client_id":"111", "message_ids":["61b87606abf665f1e802236e"]}'`  
 
 Get list message  for client id 111 with groups 111 and 222  
 curl --location --request GET 'http://0.0.0.0:82/api/v1/notifications/111?group_ids=111,222&limit=10&offset=0'

@@ -18,16 +18,16 @@ Result
     "token": "b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305"  
 }`  
 
-Run wscat connect to server as socket client  
+
 
 ### NOTIFICATIONS  
+Run wscat connect to server as socket client  
 Join 2 groups 111, 222  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/111,222  
 Join group 222  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/222  
 Join group 333  
 wscat -c ws://0.0.0.0:82/ws/notification/b1a69aa9-7b7d-4aa5-b2d3-4f8b7617f305/333  
-
 
 Push Message via rest api  
 `curl --location --request POST 'http://0.0.0.0:82/api/v1/notifications/push' \

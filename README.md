@@ -1,5 +1,5 @@
-# flask-websocket-push-notification-and-chat-demo  
-Features Demo:  
+# flask-websocket-push-notification-and-chat  
+Features:  
 1. Flask websocket with redis broker for scale up on production  
 2. Push notification on real time  
 3. Group chat  

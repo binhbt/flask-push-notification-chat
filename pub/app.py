@@ -73,7 +73,8 @@ def chitchat(ws, token, group_ids):
 def process_redis_message(ws, msg, group_ids):
     
     if msg:
-        msg = msg.decode("utf-8")
+        if isinstance(msg, (bytes, bytearray)):
+            msg = msg.decode("utf-8")
         print('...')
         print(msg)
         if is_have_message(group_ids, msg):
@@ -108,7 +109,8 @@ def get_redis_message():
     return None
 def publish_message(data, channel=CHANNEL):
     if data:
-        data = data.decode("utf-8") 
+        if isinstance(data, (bytes, bytearray)):
+            data = data.decode("utf-8") 
         redis.publish(
             channel=channel,
             message=str(data)
